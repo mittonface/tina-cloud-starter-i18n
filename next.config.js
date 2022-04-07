@@ -1,16 +1,18 @@
 const withSvgr = require("next-svgr");
 
-module.exports = withSvgr({
-  async rewrites() {
-    return [
-      {
-        source: "/",
-        destination: "/home",
-      },
-    ];
-  },
+module.exports = {
   i18n: {
-    locales: ['en-US', 'fr', 'nl-NL'],
-    defaultLocale: 'en-US'
-  }
-});
+    locales: ["en-US", "fr", "nl-NL", "nl-BE"],
+    defaultLocale: "en-US",
+  },
+  ...withSvgr({
+    async rewrites() {
+      return [
+        {
+          source: "/",
+          destination: "/home",
+        },
+      ];
+    },
+  }),
+};
