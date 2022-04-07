@@ -53,7 +53,8 @@ export const getStaticPaths = async ({ locales }) => {
   postsListData.data.getPostsList.edges.map((post) => {
     locales.map((locale) => {
       paths.push({
-        params: { filename: post.node.sys.filename, locale },
+        params: { filename: post.node.sys.filename },
+        locale,
       });
     });
   });
