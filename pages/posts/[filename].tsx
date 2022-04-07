@@ -12,6 +12,7 @@ export default function BlogPostPage(
     variables: props.variables,
     data: props.data,
   });
+
   if (data && data.getPostsDocument) {
     return (
       <Layout rawData={data} data={data.getGlobalDocument.data}>
