@@ -2,7 +2,7 @@ const withSvgr = require("next-svgr");
 
 module.exports = {
   i18n: {
-    locales: ["en-US", "fr", "nl-NL", "nl-BE"],
+    locales: ["en-US", "fr"],
     defaultLocale: "en-US",
   },
   ...withSvgr({
