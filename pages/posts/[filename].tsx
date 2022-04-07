@@ -1,7 +1,7 @@
-import { Post } from "../../components/post";
 import { ExperimentalGetTinaClient } from "../../.tina/__generated__/types";
-import { useTina } from "tinacms/dist/edit-state";
 import { Layout } from "../../components/layout";
+import { Post } from "../../components/post";
+import { useTina } from "tinacms/dist/edit-state";
 
 // Use the props returned by get static props
 export default function BlogPostPage(
@@ -26,10 +26,10 @@ export default function BlogPostPage(
   );
 }
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params, locale }) => {
   const client = ExperimentalGetTinaClient();
   const tinaProps = await client.BlogPostQuery({
-    relativePath: `${params.filename}.mdx`,
+    relativePath: `${params.filename}.${locale}.mdx`,
   });
   return {
     props: {
@@ -45,14 +45,22 @@ export const getStaticProps = async ({ params }) => {
  * So a blog post at "content/posts/hello.md" would
  * be viewable at http://localhost:3000/posts/hello
  */
-export const getStaticPaths = async () => {
+export const getStaticPaths = async ({ locales }) => {
   const client = ExperimentalGetTinaClient();
   const postsListData = await client.getPostsList();
+  const paths = [];
+
+  postsListData.data.getPostsList.edges.map((post) => {
+    locales.map((locale) => {
+      paths.push({
+        params: { filename: post.node.sys.filename, locale },
+      });
+    });
+  });
+
   return {
-    paths: postsListData.data.getPostsList.edges.map((post) => ({
-      params: { filename: post.node.sys.filename },
-    })),
-    fallback: "blocking",
+    paths,
+    fallback: true,
   };
 };
 
